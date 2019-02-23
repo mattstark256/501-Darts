@@ -1,0 +1,30 @@
+#pragma once
+
+class GameData; // Forward declaration is required to prevent circular dependency between Player and GameData.
+#include "Scoreboard.h"
+#include <string>
+
+
+class Player
+{
+public:
+	Player(std::string _name, int _skillLevel, GameData* _gameData, Scoreboard* _scoreBoard);
+	~Player();
+
+	std::string getName() { return name; }
+	void setName(std::string _name) { name = _name; }
+	int getSkillLevel() { return skillLevel; }
+	void setSkillLevel(int _skillLevel) { skillLevel = _skillLevel; }
+	void setGameData(GameData* _gameData) { gameData = _gameData; }
+	Scoreboard* getScoreboard() { return scoreboard; }
+	void setScoreboard(Scoreboard* _scoreboard) { scoreboard = _scoreboard; }
+
+	void takeTurn();
+
+private:
+	std::string name;
+	int skillLevel;
+	GameData* gameData;
+	Scoreboard* scoreboard;
+};
+
