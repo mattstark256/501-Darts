@@ -152,14 +152,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Dartboard.h" />
+    <ClInclude Include="DartboardProvided.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scoreboard.h" />
+    <ClInclude Include="Statistics.h" />
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DartboardProvided.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Dartboard.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -172,6 +175,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
+    <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -26,5 +26,16 @@ private:
 	int skillLevel;
 	GameData* gameData;
 	Scoreboard* scoreboard;
+
+	struct Target
+	{
+		Target(int _section, int _multiplier) : section(_section), multiplier(_multiplier) {}
+		int section;
+		int multiplier;
+		int getScore() { return section * multiplier; }
+	};
+
+	Target getHighestTarget(int maxScore);
+	Target getHighestWinningTarget(int currentScore);
 };
 

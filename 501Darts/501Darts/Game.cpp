@@ -6,6 +6,7 @@
 
 Game::Game(GameData* _gameData) : gameData(_gameData)
 {
+	statistics = new Statistics(gameData);
 }
 
 
@@ -14,8 +15,40 @@ Game::~Game()
 }
 
 
+void Game::playChampionships(int number)
+{
+	std::cout << "Starting simulation\n\n";
+
+	statistics->resetStatistics();
+	for (int i = 0; i < number; i++)
+	{
+		playChampionship();
+		statistics->recordChampionshipResult();
+	}
+
+	std::cout << "Simulation complete\n\n";
+	statistics->printStatistics();
+}
+
+
 void Game::playChampionship()
 {
+	bool logEnabled = (gameData->getLogDetailLevel() >= 1);
+
+	if (logEnabled)
+	{
+		std::cout << "Starting championship\n\n";
+	}
+
+	if (gameData->getStartingPlayer() == 2)
+	{
+		randomizeWhoThrowsFirst();
+	}
+	else
+	{
+		firstPlayer = gameData->getStartingPlayer();
+	}
+
 	gameData->getPlayer(0)->getScoreboard()->resetSetsWon();
 	gameData->getPlayer(1)->getScoreboard()->resetSetsWon();
 	bool championshipHasBeenWon = false;
@@ -25,12 +58,18 @@ void Game::playChampionship()
 
 		for (int i : {0, 1})
 		{
-			if (gameData->getPlayer(i)->getScoreboard()->getSetsWon() == SETS_TO_WIN_CHAMPIONSHIP)
+			if (gameData->getPlayer(i)->getScoreboard()->getSetsWon() == 7)
 			{
 				championshipHasBeenWon = true;
-				gameData->getPlayer(i)->getScoreboard()->incrementSetsWon();
-				std::cout << gameData->getPlayer(i)->getName();
-				std::cout << " won the championship.\n";
+				gameData->getPlayer(i)->getScoreboard()->incrementChampionshipsWon();
+
+				if (logEnabled)
+				{
+					std::cout << gameData->getPlayer(i)->getName();
+					std::cout << " won the championship (7 : ";
+					std::cout << gameData->getPlayer(1 - i)->getScoreboard()->getSetsWon();
+					std::cout << ")\n\n";
+				}
 			}
 		}
 	}
@@ -39,6 +78,13 @@ void Game::playChampionship()
 
 void Game::playSet()
 {
+	bool logEnabled = (gameData->getLogDetailLevel() >= 2);
+
+	if (logEnabled)
+	{
+		std::cout << "Starting set\n\n";
+	}
+
 	gameData->getPlayer(0)->getScoreboard()->resetGamesWon();
 	gameData->getPlayer(1)->getScoreboard()->resetGamesWon();
 	bool setHasBeenWon = false;
@@ -48,12 +94,18 @@ void Game::playSet()
 
 		for (int i : {0, 1})
 		{
-			if (gameData->getPlayer(i)->getScoreboard()->getGamesWon() == GAMES_TO_WIN_SET)
+			if (gameData->getPlayer(i)->getScoreboard()->getGamesWon() == 3)
 			{
 				setHasBeenWon = true;
 				gameData->getPlayer(i)->getScoreboard()->incrementSetsWon();
-				std::cout << gameData->getPlayer(i)->getName();
-				std::cout << " won the set.\n";
+
+				if (logEnabled)
+				{
+					std::cout << gameData->getPlayer(i)->getName();
+					std::cout << " won the set (3 : ";
+					std::cout << gameData->getPlayer(1 - i)->getScoreboard()->getGamesWon();
+					std::cout << ")\n\n";
+				}
 			}
 		}
 	}
@@ -62,6 +114,13 @@ void Game::playSet()
 
 void Game::playGame()
 {
+	bool logEnabled = (gameData->getLogDetailLevel() >= 3);
+
+	if (logEnabled)
+	{
+		std::cout << "Starting game\n\n";
+	}
+
 	gameData->getPlayer(0)->getScoreboard()->resetGameScore();
 	gameData->getPlayer(1)->getScoreboard()->resetGameScore();
 	bool gameHasBeenWon = false;
@@ -77,9 +136,13 @@ void Game::playGame()
 				{
 					gameHasBeenWon = true;
 					gameData->getPlayer(i)->getScoreboard()->incrementGamesWon();
-					std::cout << gameData->getPlayer(i)->getName();
-					std::cout << " won the game.\n";
 					switchWhoThrowsFirst();
+
+					if (logEnabled)
+					{
+						std::cout << gameData->getPlayer(i)->getName();
+						std::cout << " won the game\n\n";
+					}
 				}
 			}
 		}

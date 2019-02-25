@@ -16,7 +16,7 @@ UserInterface::~UserInterface()
 
 void UserInterface::startSession()
 {
-	std::cout << "Playing 1 championship.";
-	std::cout << std::endl;
-	game->playChampionship();
+	std::cout << "Matt's Darts Application\n\n";
+
+	game->playChampionships(1000);
 }

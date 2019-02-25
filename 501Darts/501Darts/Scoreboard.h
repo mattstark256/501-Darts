@@ -19,6 +19,7 @@ public:
 	void resetGamesWon() { gamesWon = 0; }
 	void incrementGamesWon() { gamesWon++; }
 	int getGameScore() { return gameScore; }
+	void setGameScore(int _gameScore) { gameScore = _gameScore; }
 	void resetGameScore() { gameScore = INITIAL_GAME_SCORE; }
 	void decreaseGameScore(int amount) { gameScore -= amount; }
 
