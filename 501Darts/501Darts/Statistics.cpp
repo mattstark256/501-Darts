@@ -38,8 +38,7 @@ void Statistics::recordChampionshipResult()
 
 void Statistics::printStatistics()
 {
-	std::cout << "STATISTICS\n\n";
-
+	std::cout << "STATISTICS\n";
 
 	std::cout << "Total championships played: ";
 	std::cout << totalChampionships;
@@ -56,7 +55,6 @@ void Statistics::printStatistics()
 	}
 	std::cout << "\n";
 
-
 	for (int i : {0, 1})
 	{
 		std::cout << gameData->getPlayer(i)->getName();
@@ -65,6 +63,7 @@ void Statistics::printStatistics()
 		std::cout << "\n";
 	}
 	std::cout << "\n";
+
 
 	std::cout << "Score frequencies";
 	std::cout << std::endl;

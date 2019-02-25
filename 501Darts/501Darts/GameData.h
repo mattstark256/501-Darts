@@ -19,6 +19,9 @@ public:
 	int getPlayerIndex(Player* player) { return (player == players[0]) ? 0 : 1; }
 	Player* getOtherPlayer(Player* player) { return (player == players[0]) ? players[1] : players[0]; }
 
+	int getChampionshipsNumber() { return championshipsNumber; }
+	void setChampionshipsNumber(int _championshipsNumber) { championshipsNumber = _championshipsNumber; }
+
 	int getLogDetailLevel() { return logDetailLevel; }
 	void setLogDetailLevel(int _logDetailLevel) { logDetailLevel = _logDetailLevel; }
 
@@ -28,6 +31,7 @@ public:
 private:
 	Dartboard *dartboard;
 	Player* players[2];
+	int championshipsNumber = 1;
 
 	// Log Detail Level
 	// 0 - per simulation

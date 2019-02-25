@@ -15,12 +15,14 @@ Game::~Game()
 }
 
 
-void Game::playChampionships(int number)
+void Game::playChampionships()
 {
 	std::cout << "Starting simulation\n\n";
 
 	statistics->resetStatistics();
-	for (int i = 0; i < number; i++)
+	gameData->getPlayer(0)->getScoreboard()->resetChampionshipsWon();
+	gameData->getPlayer(1)->getScoreboard()->resetChampionshipsWon();
+	for (int i = 0; i < gameData->getChampionshipsNumber(); i++)
 	{
 		playChampionship();
 		statistics->recordChampionshipResult();

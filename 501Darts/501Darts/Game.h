@@ -10,7 +10,7 @@ public:
 	Game(GameData* _gameData);
 	~Game();
 
-	void playChampionships(int number);
+	void playChampionships();
 
 private:
 	GameData* gameData;
