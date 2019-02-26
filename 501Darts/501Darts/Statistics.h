@@ -1,12 +1,12 @@
 #pragma once
 
-#include "GameData.h"
+#include "SimData.h"
 
 
 class Statistics
 {
 public:
-	Statistics(GameData* _gameData);
+	Statistics(SimData* _gameData);
 	~Statistics();
 
 	void resetStatistics();
@@ -14,7 +14,7 @@ public:
 	void printStatistics();
 
 private:
-	GameData* gameData;
+	SimData* simData;
 	int totalChampionships;
 	int scoreFrequencies[14];
 

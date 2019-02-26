@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 
 struct ThrowResult
 {
@@ -8,6 +10,7 @@ struct ThrowResult
 	int multiplier; // This is used for checking whether a player ended on a double.
 };
 
+
 class Dartboard
 {
 public:
@@ -15,5 +18,9 @@ public:
 	~Dartboard();
 
 	virtual ThrowResult throwDart(int section, int multiplier, int skillLevel);
+	std::string getDartboardType() { return dartboardType; }
+
+protected:
+	std::string dartboardType = "Base";
 };
 

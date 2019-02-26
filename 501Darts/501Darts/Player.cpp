@@ -2,11 +2,11 @@
 #include "Player.h"
 
 #include <iostream>
-#include "GameData.h"
+#include "SimData.h"
 #include "Dartboard.h"
 
 
-Player::Player(std::string _name, int _skillLevel, GameData* _gameData, Scoreboard* _scoreBoard) : name(_name), skillLevel(_skillLevel), gameData(_gameData), scoreboard(_scoreBoard)
+Player::Player(std::string _name, int _skillLevel, SimData* _simData, Scoreboard* _scoreBoard) : name(_name), skillLevel(_skillLevel), simData(_simData), scoreboard(_scoreBoard)
 {
 }
 
@@ -18,7 +18,7 @@ Player::~Player()
 
 void Player::takeTurn()
 {
-	bool logEnabled = (gameData->getLogDetailLevel() >= 4);
+	bool logEnabled = (simData->getLogDetailLevel() >= 4);
 
 	if (logEnabled)
 	{
@@ -59,7 +59,7 @@ void Player::takeTurn()
 			std::cout << target.section;
 		}
 
-		ThrowResult throwResult = gameData->getDartboard()->throwDart(target.section, target.multiplier, skillLevel);
+		ThrowResult throwResult = simData->getDartboard()->throwDart(target.section, target.multiplier, skillLevel);
 		scoreboard->decreaseGameScore(throwResult.multipliedScore);
 
 		if (logEnabled)

@@ -1,21 +1,21 @@
 #pragma once
 
-#include "GameData.h"
-#include "Game.h"
+#include "SimData.h"
+#include "Simulator.h"
 #include <string>
 
 
 class UserInterface
 {
 public:
-	UserInterface(GameData* _gameData, Game* _game);
+	UserInterface(SimData* _gameData, Simulator* _game);
 	~UserInterface();
 
 	void startSession();
 
 private:
-	GameData* gameData;
-	Game* game;
+	SimData* simData;
+	Simulator* simulator;
 	bool simulationHasBeenRun = false; // If true, the "re-run last simulation" option will be shown
 
 	void mainMenu();
@@ -24,6 +24,7 @@ private:
 	void playerEditor();
 	void changeName(int player);
 	void changeSkillLevel(int player);
+	void changeDartboardType();
 	int getIntInput();
 	std::string getStringInput();
 };

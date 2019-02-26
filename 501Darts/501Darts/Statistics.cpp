@@ -5,7 +5,7 @@
 #include <iomanip>
 
 
-Statistics::Statistics(GameData* _gameData) : gameData(_gameData)
+Statistics::Statistics(SimData* _simData) : simData(_simData)
 {
 }
 
@@ -28,8 +28,8 @@ void Statistics::recordChampionshipResult()
 {
 	totalChampionships++;
 
-	int player0Score = gameData->getPlayer(0)->getScoreboard()->getSetsWon();
-	int player1Score = gameData->getPlayer(1)->getScoreboard()->getSetsWon();
+	int player0Score = simData->getPlayer(0)->getScoreboard()->getSetsWon();
+	int player1Score = simData->getPlayer(1)->getScoreboard()->getSetsWon();
 
 	int arrayIndex = (player0Score == 7) ? player1Score : player0Score + 7;
 	scoreFrequencies[arrayIndex]++;
@@ -40,26 +40,26 @@ void Statistics::printStatistics()
 {
 	std::cout << "STATISTICS\n";
 
-	std::cout << "Total championships played: ";
+	std::cout << "Championships played: ";
 	std::cout << totalChampionships;
 	std::cout << std::endl;
 
 	std::cout << "First throw at start of each championship: ";
-	if (gameData->getStartingPlayer() == 2)
+	if (simData->getStartingPlayer() == 2)
 	{
 		std::cout << "randomized";
 	}
 	else
 	{
-		std::cout << gameData->getPlayer(gameData->getStartingPlayer())->getName();
+		std::cout << simData->getPlayer(simData->getStartingPlayer())->getName();
 	}
 	std::cout << "\n";
 
 	for (int i : {0, 1})
 	{
-		std::cout << gameData->getPlayer(i)->getName();
+		std::cout << simData->getPlayer(i)->getName();
 		std::cout << " won: ";
-		std::cout << gameData->getPlayer(i)->getScoreboard()->getChampionshipsWon();
+		std::cout << simData->getPlayer(i)->getScoreboard()->getChampionshipsWon();
 		std::cout << "\n";
 	}
 	std::cout << "\n";
@@ -67,9 +67,9 @@ void Statistics::printStatistics()
 
 	std::cout << "Score frequencies";
 	std::cout << std::endl;
-	std::cout << gameData->getPlayer(0)->getName();
+	std::cout << simData->getPlayer(0)->getName();
 	std::cout << " : ";
-	std::cout << gameData->getPlayer(1)->getName();
+	std::cout << simData->getPlayer(1)->getName();
 	std::cout << "\n";
 
 	for (int i = 0; i < 7; i++)

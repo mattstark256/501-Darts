@@ -6,6 +6,7 @@
 
 DartboardProvided::DartboardProvided()
 {
+	dartboardType = "Default";
 }
 
 

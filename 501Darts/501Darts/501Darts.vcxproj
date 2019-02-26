@@ -153,8 +153,9 @@
   <ItemGroup>
     <ClInclude Include="Dartboard.h" />
     <ClInclude Include="DartboardProvided.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameData.h" />
+    <ClInclude Include="DartboardVector.h" />
+    <ClInclude Include="Simulator.h" />
+    <ClInclude Include="SimData.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scoreboard.h" />
@@ -163,10 +164,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DartboardProvided.cpp" />
+    <ClCompile Include="DartboardVector.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Dartboard.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="Simulator.cpp" />
+    <ClCompile Include="SimData.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
