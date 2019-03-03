@@ -26,7 +26,14 @@ void Simulator::playChampionships()
 	{
 		playChampionship();
 		statistics->recordChampionshipResult();
+
+		if (i % 1000 == 0 && i != 0)
+		{
+			std::cout << i;
+			std::cout << " championships complete\n";
+		}
 	}
+	std::cout << "\n";
 
 	std::cout << "Simulation complete\n\n";
 	statistics->printStatistics();

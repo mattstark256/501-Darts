@@ -45,6 +45,12 @@
     <ClInclude Include="SimData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerAdvanced.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAdvancedTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -78,6 +84,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAdvanced.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAdvancedTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -26,28 +26,15 @@ void Player::takeTurn()
 		std::cout << "'s turn\n";
 	}
 
-	int throws = 0;
+	int throwNumber = 0;
 	bool hasWon = false;
 	bool hasFailed = false;
 	int initialScore = scoreboard->getGameScore();
-	while (throws < 3 && !hasWon && !hasFailed)
+	while (throwNumber < 3 && !hasWon && !hasFailed)
 	{
-		throws++;
+		throwNumber++;
 
-		Target target = Target(1, 1);
-		Target highestWinningTarget = getHighestWinningTarget(scoreboard->getGameScore());
-		// If they can finish in the next throw
-		if (scoreboard->getGameScore() == highestWinningTarget.getScore())
-		{
-			// Throw to win
-			target = highestWinningTarget;
-		}
-		else
-		{
-			// Throw to get to the highest score they can win from
-			int targetScore = scoreboard->getGameScore() - highestWinningTarget.getScore();
-			target = getHighestTarget(targetScore);
-		}
+		Target target = chooseTarget(throwNumber);
 
 		if (logEnabled)
 		{
@@ -91,6 +78,26 @@ void Player::takeTurn()
 	{
 		std::cout << "\n";
 	}
+}
+
+
+Player::Target Player::chooseTarget(int throwNumber)
+{
+	Target target = Target(1, 1);
+	Target highestWinningTarget = getHighestWinningTarget(scoreboard->getGameScore());
+	// If they can finish in the next throw
+	if (scoreboard->getGameScore() == highestWinningTarget.getScore())
+	{
+		// Throw to win
+		target = highestWinningTarget;
+	}
+	else
+	{
+		// Throw to get to the highest score they can win from
+		int targetScore = scoreboard->getGameScore() - highestWinningTarget.getScore();
+		target = getHighestTarget(targetScore);
+	}
+	return target;
 }
 
 

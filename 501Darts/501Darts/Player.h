@@ -21,7 +21,7 @@ public:
 
 	void takeTurn();
 
-private:
+protected:
 	std::string name;
 	int skillLevel;
 	SimData* simData;
@@ -35,6 +35,9 @@ private:
 		int getScore() { return section * multiplier; }
 	};
 
+	virtual Target chooseTarget(int throwNumber);
+
+private:
 	Target getHighestTarget(int maxScore);
 	Target getHighestWinningTarget(int currentScore);
 };
