@@ -27,9 +27,23 @@ void Simulator::playChampionships()
 		playChampionship();
 		statistics->recordChampionshipResult();
 
-		if (i % 1000 == 0 && i != 0)
+		int j = i + 1;
+		// If no other information is being logged, just show a loading bar
+		if (simData->getLogDetailLevel() == 0)
 		{
-			std::cout << i;
+			if (j % 100 == 0)
+			{
+				std::cout << "-";
+			}
+			if (j % 1000 == 0)
+			{
+				std::cout << " ";
+			}
+		}
+		// Log progress every 1000 championships
+		if (j % 1000 == 0)
+		{
+			std::cout << j;
 			std::cout << " championships complete\n";
 		}
 	}

@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "SimData.h"
-#include "Dartboard.h"
 
 
 Player::Player(std::string _name, int _skillLevel, SimData* _simData, Scoreboard* _scoreBoard) : name(_name), skillLevel(_skillLevel), simData(_simData), scoreboard(_scoreBoard)
@@ -34,7 +33,7 @@ void Player::takeTurn()
 	{
 		throwNumber++;
 
-		Target target = chooseTarget(throwNumber);
+		Target target = chooseTarget(throwNumber, initialScore);
 
 		if (logEnabled)
 		{
@@ -81,7 +80,7 @@ void Player::takeTurn()
 }
 
 
-Player::Target Player::chooseTarget(int throwNumber)
+Player::Target Player::chooseTarget(int throwNumber, int initialScore)
 {
 	Target target = Target(1, 1);
 	Target highestWinningTarget = getHighestWinningTarget(scoreboard->getGameScore());

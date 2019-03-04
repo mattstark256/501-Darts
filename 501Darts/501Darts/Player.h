@@ -35,7 +35,7 @@ protected:
 		int getScore() { return section * multiplier; }
 	};
 
-	virtual Target chooseTarget(int throwNumber);
+	virtual Target chooseTarget(int throwNumber, int initialScore);
 
 private:
 	Target getHighestTarget(int maxScore);

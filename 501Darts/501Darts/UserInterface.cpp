@@ -90,28 +90,28 @@ void UserInterface::simulationSetup()
 	while (!optionSelected && !quitting)
 	{
 		std::cout << "Who should throw first at the start of each championship?\n";
-		std::cout << "1: ";
+		std::cout << "1: Randomize it each time (50/50)\n";
+		std::cout << "2: ";
 		std::cout << simData->getPlayer(0)->getName();
 		std::cout << "\n";
-		std::cout << "2: ";
+		std::cout << "3: ";
 		std::cout << simData->getPlayer(1)->getName();
 		std::cout << "\n";
-		std::cout << "3: Randomize it each time\n";
 		std::cout << "0: Cancel\n";
 
 		input = getIntInput();
 
 		if (input == 1) {
 			optionSelected = true;
-			startingPlayer = 0;
+			startingPlayer = 2;
 		}
 		else if (input == 2) {
 			optionSelected = true;
-			startingPlayer = 1;
+			startingPlayer = 0;
 		}
 		else if (input == 3) {
 			optionSelected = true;
-			startingPlayer = 2;
+			startingPlayer = 1;
 		}
 		else if (input == 0) {
 			quitting = true;

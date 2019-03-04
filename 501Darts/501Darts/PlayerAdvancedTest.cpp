@@ -2,6 +2,7 @@
 #include "PlayerAdvancedTest.h"
 
 #include <iostream>
+#include "SimData.h"
 
 
 PlayerAdvancedTest::PlayerAdvancedTest(std::string _name, int _skillLevel, SimData* _simData, Scoreboard* _scoreBoard) :
@@ -15,69 +16,88 @@ PlayerAdvancedTest::~PlayerAdvancedTest()
 }
 
 
-PlayerAdvancedTest::Target PlayerAdvancedTest::chooseTarget(int throwNumber)
+PlayerAdvancedTest::Target PlayerAdvancedTest::chooseTarget(int throwNumber, int initialScore)
 {
-	// If they can win on a bullseye
+	// If they can win on a bullseye, try it
 	if (scoreboard->getGameScore() == 50)
 	{
 		return Target(50, 1);
 	}
-	// If they can win on a double
+	// If they can win on a double, try it
 	else if (scoreboard->getGameScore() <= 40 && scoreboard->getGameScore() % 2 == 0)
 	{
 		return Target(scoreboard->getGameScore() / 2, 2);
 	}
 	else
 	{
-		return chooseTargetToGetToFinishingScore();
+		// Choose a target that will get them closer to a finishing score
+		Target target = chooseTargetToGetToFinishingScore();
+
+		// Decide whether to intentionally bust. Only bust if they can do it using a single (this covers almost all situations while ensuring minimal risk).
+		if (throwNumber == 3 && scoreboard->getGameScore() < 20)
+		{
+			// Compare the scores they would get from busting and playing
+			int bustScoreRating = rateScore(initialScore);
+			int playScoreRating = rateScore(scoreboard->getGameScore() - target.getScore());
+			if (bustScoreRating > playScoreRating)
+			{
+				// Bust
+				target = Target(20, 1);
+			}
+		}
+
+		return target;
 	}
 }
 
 
-// Choose a target to get the player score closer to a finishing score.
+// Choose a target to get the player score closer to a finishing score
 PlayerAdvancedTest::Target PlayerAdvancedTest::chooseTargetToGetToFinishingScore()
 {
-	if (scoreboard->getGameScore() >= 110)
+	// If it's over 100, always aim for T20
+	if (scoreboard->getGameScore() >= 100)
 	{
 		return Target(20, 3);
 	}
 
-	Target target = Target(0, 0);
-	int targetRating = 0;
-	for (int i = 0; i < 20; i++)
+	Target bestTarget = Target(20, 1); // If the score is 1 this doesn't get overwritten
+	int bestTargetRating = 0;
+	for (int i = 0; i < FINISHING_SCORE_COUNT; i++)
 	{
-		int finishingScore = finishingScores[i];
-		int throwScore = scoreboard->getGameScore() - finishingScore;
+		int throwScore = scoreboard->getGameScore() - finishingScores[i];
 		if (throwScore > 0)
 		{
-			Target newTarget = chooseTargetForThrowScore(throwScore);
-			int newTargetRating = 0;
+			Target target = chooseTargetForThrowScore(throwScore);
 
-			if (newTarget.getScore() == throwScore) { newTargetRating += ratingExactScore; }
-			if (newTarget.multiplier == 1) { newTargetRating += ratingRiskSingle; }
-			if (newTarget.multiplier == 2) { newTargetRating += ratingRiskDouble; }
-			newTargetRating += powerTwos[i] * ratingPowerTwo;
+			// Rate the target
+			int targetRating = 0;
+			if (target.getScore() == throwScore) { targetRating += ratingExactScore; }
+			if (target.multiplier == 1) { targetRating += ratingRiskSingle; }
+			if (target.multiplier == 2) { targetRating += ratingRiskDouble; }
+			targetRating += twoFactors[i] * ratingPowerTwo;
 
-			if (newTargetRating > targetRating)
+			if (targetRating > bestTargetRating)
 			{
-				target = newTarget;
-				targetRating = newTargetRating;
+				bestTarget = target;
+				bestTargetRating = targetRating;
 			}
 		}
 	}
-	return target;
+	return bestTarget;
 }
 
 
-// Choose a target to get as close as possible to a desired throw score.
+// Choose a target to get as close as possible to a desired throw score. For example, given 27 it would return D13.
 PlayerAdvancedTest::Target PlayerAdvancedTest::chooseTargetForThrowScore(int desiredScore)
 {
 	if (desiredScore >= 60)
 	{
+		// Checking for this first is more efficient because this will be the most common situation.
 		return Target(20, 3);
 	}
-	if (desiredScore <= 20)
+	else if (desiredScore <= 20)
 	{
+		// A single is preferable to a double or a treble because it's easier to hit.
 		return Target(desiredScore, 1);
 	}
 	else
@@ -90,6 +110,7 @@ PlayerAdvancedTest::Target PlayerAdvancedTest::chooseTargetForThrowScore(int des
 
 		if (doubleRemainder <= trebleRemainder)
 		{
+			// A double is preferable to a treble because it's slightly easier to hit.
 			return highestDouble;
 		}
 		else
@@ -97,4 +118,22 @@ PlayerAdvancedTest::Target PlayerAdvancedTest::chooseTargetForThrowScore(int des
 			return highestTreble;
 		}
 	}
+}
+
+
+// Rates a score based on how advantageous it is. For example, 32 gets a high score while 73 gets a low score.
+int PlayerAdvancedTest::rateScore(int score)
+{
+	int rating = 0;
+
+	for (int i = 0; i < FINISHING_SCORE_COUNT; i++)
+	{
+		if (finishingScores[i] == score)
+		{
+			rating += twoFactors[i];
+			break;
+		}
+	}
+
+	return rating;
 }
