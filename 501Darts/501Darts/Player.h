@@ -29,6 +29,7 @@ protected:
 
 	struct Target
 	{
+		Target() { section = 0; multiplier = 0; }
 		Target(int _section, int _multiplier) : section(_section), multiplier(_multiplier) {}
 		int section;
 		int multiplier;

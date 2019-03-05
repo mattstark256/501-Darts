@@ -2,6 +2,6 @@
 c:\users\matt\documents\misc\abertay\coursework\1st year\cmp102 software design\darts exercise (unit 2)\501-darts\501darts\501darts\main.cpp(17): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   PlayerAdvanced.cpp
   PlayerAdvancedTest.cpp
-  Simulator.cpp
   Generating Code...
+  LINK : C:\Users\Matt\Documents\misc\Abertay\Coursework\1st year\CMP102 Software Design\Darts exercise (Unit 2)\501-Darts\501Darts\Debug\501Darts.exe not found or not built by the last incremental link; performing full link
   501Darts.vcxproj -> C:\Users\Matt\Documents\misc\Abertay\Coursework\1st year\CMP102 Software Design\Darts exercise (Unit 2)\501-Darts\501Darts\Debug\501Darts.exe
