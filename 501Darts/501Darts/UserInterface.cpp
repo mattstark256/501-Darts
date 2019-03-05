@@ -4,9 +4,11 @@
 #include <iostream>
 #include "DartboardProvided.h"
 #include "DartboardVector.h"
+#include "Player.h"
+#include "PlayerAdvanced.h"
 
 
-UserInterface::UserInterface(SimData* _simData, Simulator* _simulator) : simData(_simData), simulator(_simulator)
+UserInterface::UserInterface(SimData* _simData, SimData* _simDataInteractive, Simulator* _simulator) : simData(_simData), simDataInteractive(_simDataInteractive), simulator(_simulator)
 {
 }
 
@@ -30,10 +32,11 @@ void UserInterface::mainMenu()
 	{
 		std::cout << "MAIN MENU\n";
 		std::cout << "1: Run new simulation\n";
-		std::cout << "2: Settings\n";
+		std::cout << "2: Play game\n";
+		std::cout << "3: Settings\n";
 		if (simulationHasBeenRun)
 		{
-			std::cout << "3: Re-run last simulation\n";
+			std::cout << "4: Re-run last simulation\n";
 		}
 		std::cout << "0: Quit\n";
 
@@ -43,10 +46,13 @@ void UserInterface::mainMenu()
 			simulationSetup();
 		}
 		else if (input == 2) {
+			gameSetup();
+		}
+		else if (input == 3) {
 			settingsMenu();
 		}
-		else if (input == 3 && simulationHasBeenRun) {
-			simulator->playChampionships();
+		else if (input == 4 && simulationHasBeenRun) {
+			simulator->playChampionships(simData);
 		}
 		else if (input == 0) {
 			quitting = true;
@@ -145,10 +151,143 @@ void UserInterface::simulationSetup()
 	if (!quitting)
 	{
 		simData->setChampionshipsNumber(championshipsNumber);
-		simData->setStartingPlayer(startingPlayer);
+		simData->setStartingPlayerChampionship(startingPlayer);
 		simData->setLogDetailLevel(logDetailLevel);
-		simulator->playChampionships();
+		simulator->playChampionships(simData);
 		simulationHasBeenRun = true;
+	}
+}
+
+
+void UserInterface::gameSetup()
+{
+	bool quitting = false;
+	bool optionSelected = false;
+	int input;
+	int gameType; // 0 = game, 1 = championship
+
+	// Choose between game and championship
+	optionSelected = false;
+	while (!optionSelected && !quitting)
+	{
+		std::cout << "Would you like to play a game or a championship?\n";
+		std::cout << "1: Game\n";
+		std::cout << "2: Championship (Takes a long time)\n";
+		std::cout << "0: Cancel\n";
+
+		input = getIntInput();
+
+		if (input == 1) {
+			optionSelected = true;
+			gameType = 0;
+		}
+		else if (input == 2) {
+			optionSelected = true;
+			gameType = 1;
+		}
+		else if (input == 0) {
+			quitting = true;
+		}
+	}
+
+	// Select who to play against
+	optionSelected = false;
+	while (!optionSelected && !quitting)
+	{
+		std::cout << "Who would you like to play against?\n";
+		std::cout << "1: ";
+		std::cout << simData->getPlayer(0)->getName();
+		std::cout << "\n";
+		std::cout << "2: ";
+		std::cout << simData->getPlayer(1)->getName();
+		std::cout << "\n";
+		std::cout << "0: Cancel\n";
+
+		input = getIntInput();
+
+		if (input == 1) {
+			optionSelected = true;
+			simDataInteractive->setPlayer(1, simData->getPlayer(0));
+		}
+		else if (input == 2) {
+			optionSelected = true;
+			simDataInteractive->setPlayer(1, simData->getPlayer(1));
+		}
+		else if (input == 0) {
+			quitting = true;
+		}
+	}
+
+	// Select a skill level
+	optionSelected = false;
+	while (!optionSelected && !quitting)
+	{
+		std::cout << "What should your skill level be? ";
+		std::cout << simDataInteractive->getPlayer(1)->getName();
+		std::cout << "'s skill level is ";
+		std::cout << simDataInteractive->getPlayer(1)->getSkillLevel();
+		std::cout << ". (0 to cancel)\n";
+
+		input = getIntInput();
+
+		if (input > 0 && input <= 100)
+		{
+			optionSelected = true;
+			simDataInteractive->getPlayer(0)->setSkillLevel(input);
+		}
+		else if (input > 100)
+		{
+			std::cout << "Skill level can't be greater than 100.\n\n";
+		}
+		else if (input < 0)
+		{
+			std::cout << "Skill level can't be less than 0.\n\n";
+		}
+		else if (input == 0)
+		{
+			quitting = true;
+		}
+	}
+
+	// Select who should throw first
+	optionSelected = false;
+	while (!optionSelected && !quitting)
+	{
+		std::cout << "Who should throw first?\n";
+		std::cout << "1: Me\n";
+		std::cout << "2: ";
+		std::cout << simDataInteractive->getPlayer(1)->getName();
+		std::cout << "\n";
+		std::cout << "0: Cancel\n";
+
+		input = getIntInput();
+
+		if (input == 1) {
+			optionSelected = true;
+			simDataInteractive->setStartingPlayerChampionship(0);
+			simDataInteractive->setStartingPlayerGame(0);
+		}
+		else if (input == 2) {
+			optionSelected = true;
+			simDataInteractive->setStartingPlayerChampionship(1);
+			simDataInteractive->setStartingPlayerGame(1);
+		}
+		else if (input == 0) {
+			quitting = true;
+		}
+	}
+
+	if (!quitting)
+	{
+		simDataInteractive->setLogDetailLevel(4);
+		if (gameType == 0)
+		{
+			simulator->playGame(simDataInteractive, 0);
+		}
+		else
+		{
+			simulator->playChampionship(simDataInteractive, 0);
+		}
 	}
 }
 
@@ -213,6 +352,7 @@ void UserInterface::playerEditor()
 		std::cout << ")\n";
 		std::cout << "1: Change name\n";
 		std::cout << "2: Change skill level\n";
+		std::cout << "3: Change AI type\n";
 		std::cout << "0: Cancel\n";
 
 		int input = getIntInput();
@@ -223,6 +363,9 @@ void UserInterface::playerEditor()
 		else if (input == 2) {
 			changeSkillLevel(editedPlayer);
 		}
+		else if (input == 3) {
+			changeAIType(editedPlayer);
+		}
 		else if (input == 0) {
 			quitting = true;
 		}
@@ -230,45 +373,45 @@ void UserInterface::playerEditor()
 }
 
 
-void UserInterface::changeName(int player)
+void UserInterface::changeName(int playerIndex)
 {
 	std::cout << "What should ";
-	std::cout << simData->getPlayer(player)->getName();
+	std::cout << simData->getPlayer(playerIndex)->getName();
 	std::cout << "'s new name be? (0 to cancel)\n";
 
 	std::string newName = getStringInput();
 
 	if (newName != "0")
 	{
-		std::cout << simData->getPlayer(player)->getName();
+		std::cout << simData->getPlayer(playerIndex)->getName();
 		std::cout << "'s name has been changed to ";
 		std::cout << newName;
 		std::cout << ".\n\n";
-		simData->getPlayer(player)->setName(newName);
+		simData->getPlayer(playerIndex)->setName(newName);
 	}
 }
 
 
-void UserInterface::changeSkillLevel(int player)
+void UserInterface::changeSkillLevel(int playerIndex)
 {
 	bool quitting = false;
 	while (!quitting)
 	{
 		std::cout << "What should ";
-		std::cout << simData->getPlayer(player)->getName();
+		std::cout << simData->getPlayer(playerIndex)->getName();
 		std::cout << "'s new skill level be? It's currently ";
-		std::cout << simData->getPlayer(player)->getSkillLevel();
+		std::cout << simData->getPlayer(playerIndex)->getSkillLevel();
 		std::cout << ". (0 to cancel)\n";
 
 		int newSkillLevel = getIntInput();
 
 		if (newSkillLevel > 0 && newSkillLevel <= 100)
 		{
-			std::cout << simData->getPlayer(player)->getName();
+			std::cout << simData->getPlayer(playerIndex)->getName();
 			std::cout << "'s skill level has been changed to ";
 			std::cout << newSkillLevel;
 			std::cout << ".\n\n";
-			simData->getPlayer(player)->setSkillLevel(newSkillLevel);
+			simData->getPlayer(playerIndex)->setSkillLevel(newSkillLevel);
 			quitting = true;
 		}
 		else if (newSkillLevel > 100)
@@ -281,6 +424,47 @@ void UserInterface::changeSkillLevel(int player)
 		}
 		else if (newSkillLevel == 0)
 		{
+			quitting = true;
+		}
+	}
+}
+
+
+void UserInterface::changeAIType(int playerIndex)
+{
+	bool quitting = false;
+	while (!quitting)
+	{
+		Player* player = simData->getPlayer(playerIndex);
+
+		std::cout << "What AI type should ";
+		std::cout << player->getName();
+		std::cout << " use? Currently using the ";
+		std::cout << player->getPlayerType();
+		std::cout << " AI.\n";
+		std::cout << "1: Basic\n";
+		std::cout << "2: Advanced\n";
+		std::cout << "0: Cancel\n";
+
+		int input = getIntInput();
+
+		if (input == 1) {
+			std::cout << "AI type has been set to Basic.\n\n";
+			if (player->getPlayerType() != "Basic")
+			{
+				simData->setPlayer(playerIndex, new Player(player->getName(), player->getSkillLevel(), player->getScoreboard()));
+			}
+			quitting = true;
+		}
+		else if (input == 2) {
+			std::cout << "AI type has been set to Advanced.\n\n";
+			if (player->getPlayerType() != "Advanced")
+			{
+				simData->setPlayer(playerIndex, new PlayerAdvanced(player->getName(), player->getSkillLevel(), player->getScoreboard()));
+			}
+			quitting = true;
+		}
+		else if (input == 0) {
 			quitting = true;
 		}
 	}
@@ -305,7 +489,9 @@ void UserInterface::changeDartboardType()
 			std::cout << "Dartboard type has been set to Default.\n\n";
 			if (simData->getDartboard()->getDartboardType() != "Default")
 			{
-				simData->setDartboard(new DartboardProvided());
+				Dartboard* dartboard = new DartboardProvided();
+				simData->setDartboard(dartboard);
+				simDataInteractive->setDartboard(dartboard);
 			}
 			quitting = true;
 		}
@@ -313,7 +499,9 @@ void UserInterface::changeDartboardType()
 			std::cout << "Dartboard type has been set to Vector.\n\n";
 			if (simData->getDartboard()->getDartboardType() != "Vector")
 			{
-				simData->setDartboard(new DartboardVector());
+				Dartboard* dartboard = new DartboardVector();
+				simData->setDartboard(dartboard);
+				simDataInteractive->setDartboard(dartboard);
 			}
 			quitting = true;
 		}

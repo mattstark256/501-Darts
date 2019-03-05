@@ -8,22 +8,25 @@
 class UserInterface
 {
 public:
-	UserInterface(SimData* _gameData, Simulator* _game);
+	UserInterface(SimData* _simData, SimData* _simDataInteractive, Simulator* _game);
 	~UserInterface();
 
 	void startSession();
 
 private:
 	SimData* simData;
+	SimData* simDataInteractive;
 	Simulator* simulator;
 	bool simulationHasBeenRun = false; // If true, the "re-run last simulation" option will be shown
 
 	void mainMenu();
 	void simulationSetup();
+	void gameSetup();
 	void settingsMenu();
 	void playerEditor();
 	void changeName(int player);
 	void changeSkillLevel(int player);
+	void changeAIType(int player);
 	void changeDartboardType();
 	int getIntInput();
 	std::string getStringInput();

@@ -6,9 +6,10 @@
 class Statistics
 {
 public:
-	Statistics(SimData* _gameData);
+	Statistics();
 	~Statistics();
 
+	void setSimData(SimData* _simData) { simData = _simData; }
 	void resetStatistics();
 	void recordChampionshipResult();
 	void printStatistics();

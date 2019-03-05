@@ -5,7 +5,7 @@
 #include <iomanip>
 
 
-Statistics::Statistics(SimData* _simData) : simData(_simData)
+Statistics::Statistics()
 {
 }
 
@@ -45,13 +45,13 @@ void Statistics::printStatistics()
 	std::cout << std::endl;
 
 	std::cout << "First throw at start of each championship: ";
-	if (simData->getStartingPlayer() == 2)
+	if (simData->getStartingPlayerChampionship() == 2)
 	{
 		std::cout << "randomized";
 	}
 	else
 	{
-		std::cout << simData->getPlayer(simData->getStartingPlayer())->getName();
+		std::cout << simData->getPlayer(simData->getStartingPlayerChampionship())->getName();
 	}
 	std::cout << "\n";
 

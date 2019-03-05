@@ -21,6 +21,6 @@ public:
 	std::string getDartboardType() { return dartboardType; }
 
 protected:
-	std::string dartboardType = "Base";
+	std::string dartboardType = "Basic";
 };
 

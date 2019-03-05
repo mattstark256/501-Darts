@@ -27,8 +27,10 @@ public:
 	int getLogDetailLevel() { return logDetailLevel; }
 	void setLogDetailLevel(int _logDetailLevel) { logDetailLevel = _logDetailLevel; }
 
-	int getStartingPlayer() { return startingPlayer; }
-	void setStartingPlayer(int _startingPlayer) { startingPlayer = _startingPlayer; }
+	int getStartingPlayerChampionship() { return startingPlayerChampionship; }
+	void setStartingPlayerChampionship(int i) { startingPlayerChampionship = i; }
+	int getStartingPlayerGame() { return startingPlayerGame; }
+	void setStartingPlayerGame(int i) { startingPlayerGame = i; }
 
 private:
 	Dartboard *dartboard;
@@ -41,10 +43,12 @@ private:
 	// 2 - per set
 	// 3 - per game
 	// 4 - per turn
-	int logDetailLevel = 1;
+	int logDetailLevel = 0;
 
 	// 0 or 1 - one player always starts championships first
 	// 2 - it's randomized
-	int startingPlayer = 0;
+	int startingPlayerChampionship = 0;
+	// 0 or 1
+	int startingPlayerGame = 0;
 };
 

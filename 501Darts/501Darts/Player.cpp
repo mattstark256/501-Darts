@@ -5,7 +5,7 @@
 #include "SimData.h"
 
 
-Player::Player(std::string _name, int _skillLevel, SimData* _simData, Scoreboard* _scoreBoard) : name(_name), skillLevel(_skillLevel), simData(_simData), scoreboard(_scoreBoard)
+Player::Player(std::string _name, int _skillLevel, Scoreboard* _scoreBoard) : name(_name), skillLevel(_skillLevel), scoreboard(_scoreBoard)
 {
 }
 
@@ -15,14 +15,21 @@ Player::~Player()
 }
 
 
-void Player::takeTurn()
+void Player::takeTurn(SimData* simData)
 {
 	bool logEnabled = (simData->getLogDetailLevel() >= 4);
 
 	if (logEnabled)
 	{
-		std::cout << name;
-		std::cout << "'s turn\n";
+		if (playerType == "Interactive")
+		{
+			std::cout << "Your turn\n";
+		}
+		else
+		{
+			std::cout << name;
+			std::cout << "'s turn\n";
+		}
 	}
 
 	int throwNumber = 0;
@@ -50,7 +57,7 @@ void Player::takeTurn()
 
 		if (logEnabled)
 		{
-			std::cout << "   Score: ";
+			std::cout << "   Hit: ";
 			std::cout << throwResult.multipliedScore;
 			std::cout << "   New score: ";
 			std::cout << scoreboard->getGameScore();
@@ -68,7 +75,7 @@ void Player::takeTurn()
 
 			if (logEnabled)
 			{
-				std::cout << "Their score is too low so their turn is discounted.\n";
+				std::cout << "The score is too low so the turn is discounted.\n";
 			}
 		}
 	}

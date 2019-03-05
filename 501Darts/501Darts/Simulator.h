@@ -8,20 +8,15 @@
 class Simulator
 {
 public:
-	Simulator(SimData* _gameData);
+	Simulator();
 	~Simulator();
 
-	void playChampionships();
+	void playChampionships(SimData* simData);
+	void playChampionship(SimData* simData, int championshipNumber);
+	void playSet(SimData* simData, int setNumber);
+	void playGame(SimData* simData, int gameNumber);
 
 private:
-	SimData* simData;
 	Statistics* statistics;
-	int firstPlayer = 0; // This is the index that will be used with getPlayer. The value should be 0 or 1.
-
-	void playChampionship();
-	void playSet();
-	void playGame();
-	void randomizeWhoThrowsFirst(); // This isn't needed for task 1, because the task specifies that Sid throws first.
-	void switchWhoThrowsFirst();
 };
 

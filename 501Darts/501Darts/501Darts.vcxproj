@@ -156,6 +156,7 @@
     <ClInclude Include="DartboardVector.h" />
     <ClInclude Include="PlayerAdvanced.h" />
     <ClInclude Include="PlayerAdvancedTest.h" />
+    <ClInclude Include="PlayerInteractive.h" />
     <ClInclude Include="Simulator.h" />
     <ClInclude Include="SimData.h" />
     <ClInclude Include="pch.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="Dartboard.cpp" />
     <ClCompile Include="PlayerAdvanced.cpp" />
     <ClCompile Include="PlayerAdvancedTest.cpp" />
+    <ClCompile Include="PlayerInteractive.cpp" />
     <ClCompile Include="Simulator.cpp" />
     <ClCompile Include="SimData.cpp" />
     <ClCompile Include="pch.cpp">

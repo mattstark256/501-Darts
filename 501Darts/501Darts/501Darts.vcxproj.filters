@@ -51,6 +51,9 @@
     <ClInclude Include="PlayerAdvancedTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInteractive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerAdvancedTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInteractive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

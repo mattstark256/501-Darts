@@ -4,11 +4,13 @@
 #include <iostream>
 
 
-PlayerAdvanced::PlayerAdvanced(std::string _name, int _skillLevel, SimData* _simData, Scoreboard* _scoreBoard) :
-	Player(_name, _skillLevel, _simData, _scoreBoard)
+PlayerAdvanced::PlayerAdvanced(std::string _name, int _skillLevel, Scoreboard* _scoreBoard) :
+	Player(_name, _skillLevel, _scoreBoard)
 {
+	playerType = "Advanced";
+
 	precomputeTargets();
-	// displayPrecomputedTargets();
+	//displayPrecomputedTargets();
 }
 
 
@@ -138,11 +140,11 @@ PlayerAdvanced::Target PlayerAdvanced::precomputeTarget(int throwNumber, int cur
 
 			// Rate the target
 			int targetRating = 0;
-			if (target.getScore() == throwScore) { targetRating += ratingExactScore; }
-			if (finishingScores[i] != 50) { targetRating += ratingRiskFinishingDouble; }
-			if (target.multiplier == 1) { targetRating += ratingRiskSingle; }
-			if (target.multiplier == 2) { targetRating += ratingRiskDouble; }
-			targetRating += twoFactors[i] * ratingPowerTwo;
+			if (target.getScore() == throwScore) { targetRating += RATING_EXACT_SCORE; }
+			if (finishingScores[i] != 50) { targetRating += RATING_RISK_FINISHING_DOUBLE; }
+			if (target.multiplier == 1) { targetRating += RATING_RISK_SINGLE; }
+			if (target.multiplier == 2) { targetRating += RATING_RISK_DOUBLE; }
+			targetRating += twoFactors[i] * RATING_TWO_FACTORS;
 
 			// Never aim for 50 unless it's the only way to win by the end of the turn
 			if (throwNumber != 2 && finishingScores[i] == 50) { targetRating = 0; }
