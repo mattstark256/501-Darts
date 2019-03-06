@@ -1,2 +1,21 @@
-﻿  UserInterface.cpp
+﻿  pch.cpp
+  DartboardProvided.cpp
+  DartboardVector.cpp
+c:\users\matt\documents\misc\abertay\coursework\1st year\cmp102 software design\darts exercise (unit 2)\501-darts\501darts\501darts\dartboardvector.cpp(69): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\matt\documents\misc\abertay\coursework\1st year\cmp102 software design\darts exercise (unit 2)\501-darts\501darts\501darts\dartboardvector.cpp(74): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\matt\documents\misc\abertay\coursework\1st year\cmp102 software design\darts exercise (unit 2)\501-darts\501darts\501darts\dartboardvector.cpp(86): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\matt\documents\misc\abertay\coursework\1st year\cmp102 software design\darts exercise (unit 2)\501-darts\501darts\501darts\dartboardvector.cpp(109): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Main.cpp
+c:\users\matt\documents\misc\abertay\coursework\1st year\cmp102 software design\darts exercise (unit 2)\501-darts\501darts\501darts\main.cpp(18): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Dartboard.cpp
+  PlayerAdvanced.cpp
+  PlayerBasic.cpp
+  PlayerInteractive.cpp
+  Simulator.cpp
+  SimData.cpp
+  Player.cpp
+  Scoreboard.cpp
+  Statistics.cpp
+  UserInterface.cpp
+  Generating Code...
   501Darts.vcxproj -> C:\Users\Matt\Documents\misc\Abertay\Coursework\1st year\CMP102 Software Design\Darts exercise (Unit 2)\501-Darts\501Darts\Debug\501Darts.exe

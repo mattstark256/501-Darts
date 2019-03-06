@@ -48,10 +48,10 @@
     <ClInclude Include="PlayerAdvanced.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerAdvancedTest.h">
+    <ClInclude Include="PlayerInteractive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInteractive.h">
+    <ClInclude Include="PlayerBasic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,10 +92,10 @@
     <ClCompile Include="PlayerAdvanced.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerAdvancedTest.cpp">
+    <ClCompile Include="PlayerInteractive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerInteractive.cpp">
+    <ClCompile Include="PlayerBasic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

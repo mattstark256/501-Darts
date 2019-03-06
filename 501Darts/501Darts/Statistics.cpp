@@ -2,7 +2,7 @@
 #include "Statistics.h"
 
 #include <iostream>
-#include <iomanip>
+#include <iomanip> // setprecision
 
 
 Statistics::Statistics()
@@ -15,6 +15,7 @@ Statistics::~Statistics()
 }
 
 
+// Reset all the recorded data. This is called at the start of a simulation.
 void Statistics::resetStatistics()
 {
 	totalChampionships = 0;
@@ -24,7 +25,9 @@ void Statistics::resetStatistics()
 	}
 }
 
-void Statistics::recordChampionshipResult()
+
+// Record data from the current championship. This is called once at the end of each championship.
+void Statistics::recordChampionshipResult(SimData* simData)
 {
 	totalChampionships++;
 
@@ -36,7 +39,8 @@ void Statistics::recordChampionshipResult()
 }
 
 
-void Statistics::printStatistics()
+// Display all the recorded data. This is called at the end of a simulation.
+void Statistics::printStatistics(SimData* simData)
 {
 	std::cout << "STATISTICS\n";
 
@@ -74,16 +78,17 @@ void Statistics::printStatistics()
 
 	for (int i = 0; i < 7; i++)
 	{
-		printFrequency(i, 7);
+		printFrequency(7, i);
 	}
 	for (int i = 0; i < 7; i++)
 	{
-		printFrequency(7, i);
+		printFrequency(i, 7);
 	}
 	std::cout << "\n";
 }
 
 
+// Display one line of the frequency data. (eg "7 : 4   10.9%")
 void Statistics::printFrequency(int score0, int score1)
 {
 	std::cout << score0;

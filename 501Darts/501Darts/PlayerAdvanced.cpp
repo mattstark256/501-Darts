@@ -10,6 +10,8 @@ PlayerAdvanced::PlayerAdvanced(std::string _name, int _skillLevel, Scoreboard* _
 	playerType = "Advanced";
 
 	precomputeTargets();
+
+	// Uncomment this to view the generated lookup table
 	//displayPrecomputedTargets();
 }
 
@@ -19,38 +21,27 @@ PlayerAdvanced::~PlayerAdvanced()
 }
 
 
+// This is called by Player to decide what to throw at.
 PlayerAdvanced::Target PlayerAdvanced::chooseTarget(int throwNumber, int initialScore)
 {
-	// If they can win on a double, try it
-	if (scoreboard->getGameScore() <= 40 && scoreboard->getGameScore() % 2 == 0)
-	{
-		return Target(scoreboard->getGameScore() / 2, 2);
-	}
-	// If it's their third throw and they can win on a bullseye, try it (if it's their first or second throw it's an unnecessary risk)
-	else if (throwNumber == 3 && scoreboard->getGameScore() == 50)
-	{
-		return Target(50, 1);
-	}
-	else
-	{
-		// Choose a target by using the precomputedTargets lookup table
-		Target target = getPrecomputedTarget(throwNumber, scoreboard->getGameScore());
+	// Choose a target by using the precomputedTargets lookup table
+	Target target = getPrecomputedTarget(throwNumber, scoreboard->getGameScore());
 
-		// Decide whether to intentionally bust. Only bust if they can do it using a single (this covers almost all situations while ensuring minimal risk).
-		if (throwNumber == 3 && scoreboard->getGameScore() < 20)
+	// Decide whether to intentionally bust. Only bust if they can do it using a single (this covers almost all situations while ensuring minimal risk).
+	int predictedScore = scoreboard->getGameScore() - target.getScore();
+	if (throwNumber == 3 && scoreboard->getGameScore() < 20 && predictedScore != 0)
+	{
+		// Compare the scores they would get from busting and playing
+		int bustScoreRating = rateScore(initialScore);
+		int playScoreRating = rateScore(predictedScore);
+		if (bustScoreRating > playScoreRating)
 		{
-			// Compare the scores they would get from busting and playing
-			int bustScoreRating = rateScore(initialScore);
-			int playScoreRating = rateScore(scoreboard->getGameScore() - target.getScore());
-			if (bustScoreRating > playScoreRating)
-			{
-				// Bust
-				target = Target(20, 1);
-			}
+			// Bust
+			target = Target(20, 1);
 		}
-
-		return target;
 	}
+
+	return target;
 }
 
 
@@ -72,7 +63,6 @@ PlayerAdvanced::Target PlayerAdvanced::getPrecomputedTarget(int throwNumber, int
 int PlayerAdvanced::rateScore(int score)
 {
 	int rating = 0;
-
 	for (int i = 0; i < FINISHING_SCORE_COUNT; i++)
 	{
 		if (finishingScores[i] == score)
@@ -83,7 +73,6 @@ int PlayerAdvanced::rateScore(int score)
 			break;
 		}
 	}
-
 	return rating;
 }
 
@@ -125,10 +114,21 @@ void PlayerAdvanced::displayPrecomputedTargets()
 }
 
 
-// Choose a target to get the player score closer to a finishing score.
-// This is done by comparing each finishing score  
+// Choose a target based on the current throw number and score.
 PlayerAdvanced::Target PlayerAdvanced::precomputeTarget(int throwNumber, int currentScore)
 {
+	// If they can win on a double, try it
+	if (currentScore <= 40 && currentScore % 2 == 0)
+	{
+		return Target(currentScore / 2, 2);
+	}
+	// If it's their third throw and they can win on a bullseye, try it (if it's their first or second throw it's an unnecessary risk)
+	else if (throwNumber == 3 && currentScore == 50)
+	{
+		return Target(50, 1);
+	}
+
+	// If they're not on a finishing score, compare each finishing score to decide which they should try to get to
 	Target bestTarget;
 	int bestTargetRating = 0;
 	for (int i = 0; i < FINISHING_SCORE_COUNT; i++)

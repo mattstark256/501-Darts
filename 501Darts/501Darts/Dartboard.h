@@ -3,6 +3,7 @@
 #include <string>
 
 
+// This struct is used because the dartboard functions need to return both a score and a multiplier.
 struct ThrowResult
 {
 	ThrowResult(int _score, int _multiplier) : multipliedScore(_score), multiplier(_multiplier) {}
@@ -11,6 +12,7 @@ struct ThrowResult
 };
 
 
+// This is the base class for dartboards.
 class Dartboard
 {
 public:
@@ -21,6 +23,6 @@ public:
 	std::string getDartboardType() { return dartboardType; }
 
 protected:
-	std::string dartboardType = "Basic";
+	std::string dartboardType = "Base class"; // Each dartboard class sets this to a different value
 };
 

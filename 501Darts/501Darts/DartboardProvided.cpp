@@ -15,7 +15,7 @@ DartboardProvided::~DartboardProvided()
 }
 
 
-// Instead of modifying the provided functions, I've used throwDart as an interface for them. The provided functions don't return a multiplier, so it guesses based on the returned score.
+// I chose to leave the provided functions unmodified and to use throwDart as an interface for them. The provided functions don't return a multiplier, so it guesses based on the returned score.
 ThrowResult DartboardProvided::throwDart(int section, int multiplier, int skillLevel)
 {
 	if (section == 50)

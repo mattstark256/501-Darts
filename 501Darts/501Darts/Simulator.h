@@ -18,5 +18,6 @@ public:
 
 private:
 	Statistics* statistics;
+	void showSimulationProgress(int completed, int total);
 };
 

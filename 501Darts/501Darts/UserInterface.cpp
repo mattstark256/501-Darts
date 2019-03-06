@@ -4,7 +4,7 @@
 #include <iostream>
 #include "DartboardProvided.h"
 #include "DartboardVector.h"
-#include "Player.h"
+#include "PlayerBasic.h"
 #include "PlayerAdvanced.h"
 
 
@@ -18,13 +18,23 @@ UserInterface::~UserInterface()
 }
 
 
+// Start a user interface session. Called by main()
 void UserInterface::startSession()
 {
-	std::cout << "MATT'S DARTS SIMULATOR\n\n";
+	// Title
+	std::cout << "\n";
+	std::cout << "      ___  ___\n";
+	std::cout << "    ____  /___\\___.-----.___\n";
+	std::cout << "      ___ \\___/   '-----'\n";
+	std::cout << "\n";
+	std::cout << "   MATT'S 501 DARTS SIMULATOR\n";
+	std::cout << "\n\n";
+
 	mainMenu();
 }
 
 
+// Main menu
 void UserInterface::mainMenu()
 {
 	bool quitting = false;
@@ -58,17 +68,17 @@ void UserInterface::mainMenu()
 			quitting = true;
 		}
 	}
-
 }
 
 
+// Input simulation settings then run a simulation
 void UserInterface::simulationSetup()
 {
 	bool quitting = false;
 	bool optionSelected = false;
 	int input;
 
-	// The gameData values are not modified until the simulation is ready to be run. This is so if you cancel, you won't overwrite the last simulation's settings.
+	// The simData values are not modified until the simulation is ready to be run. This is so if you cancel, you won't overwrite the previous settings.
 	int championshipsNumber;
 	int startingPlayer;
 	int logDetailLevel;
@@ -148,6 +158,7 @@ void UserInterface::simulationSetup()
 		}
 	}
 
+	// Run the simulation
 	if (!quitting)
 	{
 		simData->setChampionshipsNumber(championshipsNumber);
@@ -159,6 +170,7 @@ void UserInterface::simulationSetup()
 }
 
 
+// Input game settings then run a game
 void UserInterface::gameSetup()
 {
 	bool quitting = false;
@@ -277,6 +289,7 @@ void UserInterface::gameSetup()
 		}
 	}
 
+	// Start the game
 	if (!quitting)
 	{
 		simDataInteractive->setLogDetailLevel(4);
@@ -292,6 +305,7 @@ void UserInterface::gameSetup()
 }
 
 
+// Settings menu
 void UserInterface::settingsMenu()
 {
 	bool quitting = false;
@@ -317,12 +331,14 @@ void UserInterface::settingsMenu()
 }
 
 
+// Player modification options
 void UserInterface::playerEditor()
 {
 	bool quitting = false;
 	bool optionSelected = false;
 	int editedPlayer;
 
+	// Choose which player to edit
 	while (!quitting && !optionSelected)
 	{
 		std::cout << "Which player would you like to edit?\n";
@@ -373,6 +389,7 @@ void UserInterface::playerEditor()
 }
 
 
+// Change a player's name
 void UserInterface::changeName(int playerIndex)
 {
 	std::cout << "What should ";
@@ -392,6 +409,7 @@ void UserInterface::changeName(int playerIndex)
 }
 
 
+// Change a player's skill level
 void UserInterface::changeSkillLevel(int playerIndex)
 {
 	bool quitting = false;
@@ -430,6 +448,7 @@ void UserInterface::changeSkillLevel(int playerIndex)
 }
 
 
+// Change a player's AI type (switch between different Player classes)
 void UserInterface::changeAIType(int playerIndex)
 {
 	bool quitting = false;
@@ -452,7 +471,7 @@ void UserInterface::changeAIType(int playerIndex)
 			std::cout << "AI type has been set to Basic.\n\n";
 			if (player->getPlayerType() != "Basic")
 			{
-				simData->setPlayer(playerIndex, new Player(player->getName(), player->getSkillLevel(), player->getScoreboard()));
+				simData->setPlayer(playerIndex, new PlayerBasic(player->getName(), player->getSkillLevel(), player->getScoreboard()));
 			}
 			quitting = true;
 		}
@@ -471,6 +490,7 @@ void UserInterface::changeAIType(int playerIndex)
 }
 
 
+// Change the dartboard type (switch between different Dartboard classes)
 void UserInterface::changeDartboardType()
 {
 	bool quitting = false;
@@ -480,7 +500,7 @@ void UserInterface::changeDartboardType()
 		std::cout << simData->getDartboard()->getDartboardType();
 		std::cout << " dartboard.\n";
 		std::cout << "1: Default - Uses the functions provided in the brief\n";
-		std::cout << "2: Vector - Uses vectors to simulate accuracy based on skill level\n";
+		std::cout << "2: Vector - Uses vectors to simulate accuracy based on skill level (slower because it uses trigonometry)\n";
 		std::cout << "0: Cancel\n";
 
 		int input = getIntInput();
@@ -512,7 +532,7 @@ void UserInterface::changeDartboardType()
 }
 
 
-// Gets the users input as an int. Non-int values will return 0.
+// Gets the users input as an int. Non-int values return 0.
 int UserInterface::getIntInput()
 {
 	int input;
@@ -525,6 +545,7 @@ int UserInterface::getIntInput()
 
 	return input;
 }
+
 
 // Gets the users input as a string.
 std::string UserInterface::getStringInput()

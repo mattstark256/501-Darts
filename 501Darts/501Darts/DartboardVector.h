@@ -14,6 +14,7 @@ struct Vector2
 };
 
 
+// This dartboard uses vectors to simulate accuracy based on skill level.
 class DartboardVector :
 	public Dartboard
 {

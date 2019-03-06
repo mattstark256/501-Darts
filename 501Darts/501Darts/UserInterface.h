@@ -5,10 +5,11 @@
 #include <string>
 
 
+// This class contains all the application's menus. The menus allow the user to run simulations or modify the simData objects.
 class UserInterface
 {
 public:
-	UserInterface(SimData* _simData, SimData* _simDataInteractive, Simulator* _game);
+	UserInterface(SimData* _simData, SimData* _simDataInteractive, Simulator* _simulator);
 	~UserInterface();
 
 	void startSession();

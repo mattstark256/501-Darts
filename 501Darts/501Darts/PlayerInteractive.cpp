@@ -17,9 +17,11 @@ PlayerInteractive::~PlayerInteractive()
 }
 
 
-// Ask the player what they'd like to aim at and return the response as a Target
+// Ask the player what they'd like to aim at and return the response as a Target.
+// This is called by Player to decide what to throw at.
 PlayerInteractive::Target PlayerInteractive::chooseTarget(int throwNumber, int initialScore)
 {
+	// Display the throw number and current score
 	std::cout << "Throw: ";
 	std::cout << throwNumber;
 	std::cout << "/3   Score: ";
@@ -30,11 +32,13 @@ PlayerInteractive::Target PlayerInteractive::chooseTarget(int throwNumber, int i
 	bool optionSelected = false;
 	while (!optionSelected)
 	{
-		std::cout << "What would you like to aim at? (eg 12, D17, T4, B)\n";
+		// Ask the player for an input
+		std::cout << "What will you aim at? (eg 9, D14, B)\n";
 
 		std::string input;
 		std::getline(std::cin, input);
 
+		// Interpret the input
 		target = stringToTarget(input);
 
 		if (target.getScore() != 0)
@@ -55,9 +59,9 @@ PlayerInteractive::Target PlayerInteractive::stringToTarget(std::string string)
 	{
 		return Target(i, 1);
 	}
-	if (i > 20 && i <= 40 && i%2==0)
+	if (i > 20 && i <= 40 && i % 2 == 0)
 	{
-		return Target(i/2, 2);
+		return Target(i / 2, 2);
 	}
 	if (i > 20 && i <= 60 && i % 3 == 0)
 	{
@@ -100,11 +104,13 @@ PlayerInteractive::Target PlayerInteractive::stringToTarget(std::string string)
 // Converts strings to integers. If it can't be converted, return 0.
 int PlayerInteractive::stringToInt(std::string string)
 {
+	// std::stoi throws an exception if it the string isn't valid, it's necessary to use a try-block.
 	try
 	{
 		return std::stoi(string);
 	}
-	catch (std::invalid_argument const &e) {}
-	catch (std::out_of_range const &e) {}
-	return 0;
+	catch (...)
+	{
+		return 0;
+	}
 }

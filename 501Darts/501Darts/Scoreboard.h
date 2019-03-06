@@ -3,6 +3,7 @@
 #define INITIAL_GAME_SCORE 501
 
 
+// Each player has one scoreboard which they use to keep track of their score as well as how many games, sets and championships they have won.
 class Scoreboard
 {
 public:

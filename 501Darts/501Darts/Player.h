@@ -5,12 +5,14 @@ class SimData; // Forward declaration is required to prevent circular dependency
 #include <string>
 
 
+// This is the base class for players.
 class Player
 {
 public:
 	Player(std::string _name, int _skillLevel, Scoreboard* _scoreBoard);
 	~Player();
 
+	// Getters and setters
 	std::string getName() { return name; }
 	void setName(std::string _name) { name = _name; }
 	int getSkillLevel() { return skillLevel; }
@@ -24,9 +26,10 @@ public:
 protected:
 	std::string name;
 	int skillLevel;
-	std::string playerType = "Basic";
+	std::string playerType = "Base class"; // Each player class sets this to a different value
 	Scoreboard* scoreboard;
 
+	// This is used so that functions in player classes can return both a section and a multiplier (eg double 7)
 	struct Target
 	{
 		Target() { section = 0; multiplier = 0; }
@@ -37,9 +40,5 @@ protected:
 	};
 
 	virtual Target chooseTarget(int throwNumber, int initialScore);
-
-private:
-	Target getHighestTarget(int maxScore);
-	Target getHighestWinningTarget(int currentScore);
 };
 

@@ -15,42 +15,33 @@ Simulator::~Simulator()
 }
 
 
+// Simulate a series of championships and print the results. The number of championships to be simulated is determined by the championshipsNumber variable in simData.
 void Simulator::playChampionships(SimData* simData)
 {
-	statistics->setSimData(simData);
-
 	std::cout << "Starting simulation\n\n";
 
 	statistics->resetStatistics();
 	simData->getPlayer(0)->getScoreboard()->resetChampionshipsWon();
 	simData->getPlayer(1)->getScoreboard()->resetChampionshipsWon();
-	for (int i = 0; i < simData->getChampionshipsNumber(); i++)
-	{
-		playChampionship(simData, i + 1);
-		statistics->recordChampionshipResult();
 
-		// Show a loading bar and log progress every 1000 championships
-		int j = i + 1;
-		if (simData->getLogDetailLevel() == 0 && simData->getChampionshipsNumber() >= 1000)
+	for (int championshipNumber = 1; championshipNumber <= simData->getChampionshipsNumber(); championshipNumber++)
+	{
+		playChampionship(simData, championshipNumber);
+		statistics->recordChampionshipResult(simData);
+
+		if (simData->getLogDetailLevel() == 0)
 		{
-			if (j % 100 == 0)
-			{
-				std::cout << "-";
-			}
-			if (j % 1000 == 0)
-			{
-				std::cout << " ";
-				std::cout << j;
-				std::cout << " championships complete\n\n";
-			}
+			// Show a loading bar and log progress every 1000 championships
+			showSimulationProgress(championshipNumber, simData->getChampionshipsNumber());
 		}
 	}
 
 	std::cout << "Simulation complete\n\n";
-	statistics->printStatistics();
+	statistics->printStatistics(simData);
 }
 
 
+// Simulate a championship
 void Simulator::playChampionship(SimData* simData, int championshipNumber)
 {
 	bool logEnabled = (simData->getLogDetailLevel() >= 1);
@@ -62,6 +53,7 @@ void Simulator::playChampionship(SimData* simData, int championshipNumber)
 		std::cout << "\n\n";
 	}
 
+	// Decide who should throw first
 	if (simData->getStartingPlayerChampionship() == 2)
 	{
 		simData->setStartingPlayerGame(rand() % 2);
@@ -73,6 +65,8 @@ void Simulator::playChampionship(SimData* simData, int championshipNumber)
 
 	simData->getPlayer(0)->getScoreboard()->resetSetsWon();
 	simData->getPlayer(1)->getScoreboard()->resetSetsWon();
+
+	// Play sets until a player has won 7
 	int setNumber = 0;
 	bool championshipHasBeenWon = false;
 	while (!championshipHasBeenWon)
@@ -80,6 +74,7 @@ void Simulator::playChampionship(SimData* simData, int championshipNumber)
 		setNumber++;
 		playSet(simData, setNumber);
 
+		// Check if a player has won
 		for (int i : {0, 1})
 		{
 			if (simData->getPlayer(i)->getScoreboard()->getSetsWon() == 7)
@@ -89,8 +84,15 @@ void Simulator::playChampionship(SimData* simData, int championshipNumber)
 
 				if (logEnabled)
 				{
-					std::cout << simData->getPlayer(i)->getName();
-					std::cout << " won the championship! (7 : ";
+					if (simData->getPlayer(i)->getPlayerType() == "Interactive")
+					{
+						std::cout << "You won the championship! (7 : ";
+					}
+					else
+					{
+						std::cout << simData->getPlayer(i)->getName();
+						std::cout << " won the championship! (7 : ";
+					}
 					std::cout << simData->getPlayer(1 - i)->getScoreboard()->getSetsWon();
 					std::cout << ")\n\n";
 				}
@@ -100,6 +102,7 @@ void Simulator::playChampionship(SimData* simData, int championshipNumber)
 }
 
 
+// Simulate a set
 void Simulator::playSet(SimData* simData, int setNumber)
 {
 	bool logEnabled = (simData->getLogDetailLevel() >= 2);
@@ -113,6 +116,8 @@ void Simulator::playSet(SimData* simData, int setNumber)
 
 	simData->getPlayer(0)->getScoreboard()->resetGamesWon();
 	simData->getPlayer(1)->getScoreboard()->resetGamesWon();
+
+	// Play games until a player has won 3
 	int gameNumber = 0;
 	bool setHasBeenWon = false;
 	while (!setHasBeenWon)
@@ -120,6 +125,10 @@ void Simulator::playSet(SimData* simData, int setNumber)
 		gameNumber++;
 		playGame(simData, gameNumber);
 
+		// Switch who starts the next game
+		simData->setStartingPlayerGame(1 - simData->getStartingPlayerGame());
+
+		// Check if a player has won
 		for (int i : {0, 1})
 		{
 			if (simData->getPlayer(i)->getScoreboard()->getGamesWon() == 3)
@@ -129,10 +138,15 @@ void Simulator::playSet(SimData* simData, int setNumber)
 
 				if (logEnabled)
 				{
-					std::cout << simData->getPlayer(i)->getName();
-					std::cout << " won the set! (3 : ";
-					std::cout << simData->getPlayer(1 - i)->getScoreboard()->getGamesWon();
-					std::cout << ")\n\n";
+					if (simData->getPlayer(i)->getPlayerType() == "Interactive")
+					{
+						std::cout << "You won the set!\n\n";
+					}
+					else
+					{
+						std::cout << simData->getPlayer(i)->getName();
+						std::cout << " won the set!\n\n";
+					}
 				}
 			}
 		}
@@ -140,6 +154,7 @@ void Simulator::playSet(SimData* simData, int setNumber)
 }
 
 
+// Simulate a game
 void Simulator::playGame(SimData* simData, int gameNumber)
 {
 	bool logEnabled = (simData->getLogDetailLevel() >= 3);
@@ -153,6 +168,8 @@ void Simulator::playGame(SimData* simData, int gameNumber)
 
 	simData->getPlayer(0)->getScoreboard()->resetGameScore();
 	simData->getPlayer(1)->getScoreboard()->resetGameScore();
+
+	// Take turns until a player has won
 	bool gameHasBeenWon = false;
 	while (!gameHasBeenWon)
 	{
@@ -162,13 +179,11 @@ void Simulator::playGame(SimData* simData, int gameNumber)
 			{
 				simData->getPlayer(i)->takeTurn(simData);
 
+				// Check if a player has won
 				if (simData->getPlayer(i)->getScoreboard()->getGameScore() == 0)
 				{
 					gameHasBeenWon = true;
 					simData->getPlayer(i)->getScoreboard()->incrementGamesWon();
-
-					// Switch who starts the next game
-					simData->setStartingPlayerGame(1 - simData->getStartingPlayerGame());
 
 					if (logEnabled)
 					{
@@ -184,6 +199,30 @@ void Simulator::playGame(SimData* simData, int gameNumber)
 					}
 				}
 			}
+		}
+	}
+}
+
+
+// Show a loading bar and log progress every 1000 championships
+void Simulator::showSimulationProgress(int completed, int total)
+{
+	if (total >= 1000)
+	{
+		if (completed % 100 == 0)
+		{
+			std::cout << "-";
+		}
+		if (completed % 1000 == 0 || completed == total)
+		{
+			std::cout << " ";
+			std::cout << completed;
+			std::cout << " championships complete";
+			std::cout << "\n";
+		}
+		if (completed == total)
+		{
+			std::cout << "\n";
 		}
 	}
 }

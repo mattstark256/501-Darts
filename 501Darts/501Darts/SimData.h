@@ -5,8 +5,9 @@
 #include "Player.h"
 
 
-// This class contains the main properties of the simulation, such as who is playing and what dartboard they are using.
+// This class contains the main properties of a simulation, such as who is playing and what dartboard they are using.
 // Keeping it all in one object makes it easy for other objects to access necessary information. For example, a player can find out who their opponent is.
+// It also allows the application to keep track of multiple simulation configurations and to switch between them without overwriting data.
 class SimData
 {
 public:
@@ -35,6 +36,8 @@ public:
 private:
 	Dartboard *dartboard;
 	Player* players[2];
+
+	// How many championships to play. This is stored for the "Re-run last simulation" feature.
 	int championshipsNumber = 1;
 
 	// Log Detail Level
@@ -45,9 +48,11 @@ private:
 	// 4 - per turn
 	int logDetailLevel = 0;
 
+	// Who has the first throw in a championship
 	// 0 or 1 - one player always starts championships first
 	// 2 - it's randomized
 	int startingPlayerChampionship = 0;
+	// Who has the first throw in a game
 	// 0 or 1
 	int startingPlayerGame = 0;
 };

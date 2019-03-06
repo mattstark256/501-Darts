@@ -4,7 +4,6 @@
 #include <cmath>
 #include <cstdlib>  // rand
 #include <iostream>
-using namespace std;
 
 // Measurements are in mm, using specifications from https://www.reddragondarts.com/info/dartboard-specification/
 #define BOARD_RADIUS 170.f
@@ -42,7 +41,7 @@ ThrowResult DartboardVector::throwDart(int section, int multiplier, int skillLev
 }
 
 
-// Get the ideal position to aim at for a particular score
+// Get the best position to aim at for a particular score
 Vector2 DartboardVector::getAimPosition(int section, int multiplier)
 {
 	if (section == 50)
