@@ -44,10 +44,12 @@ void Statistics::printStatistics(SimData* simData)
 {
 	std::cout << "STATISTICS\n";
 
+	// Show number of championships
 	std::cout << "Championships played: ";
 	std::cout << totalChampionships;
 	std::cout << std::endl;
 
+	// Show who throws first
 	std::cout << "First throw at start of each championship: ";
 	if (simData->getStartingPlayerChampionship() == 2)
 	{
@@ -59,23 +61,30 @@ void Statistics::printStatistics(SimData* simData)
 	}
 	std::cout << "\n";
 
+	// Show how many championships each player won and what percentage of the total that is
 	for (int i : {0, 1})
 	{
 		std::cout << simData->getPlayer(i)->getName();
 		std::cout << " won: ";
-		std::cout << simData->getPlayer(i)->getScoreboard()->getChampionshipsWon();
+		int championshipsWon = simData->getPlayer(i)->getScoreboard()->getChampionshipsWon();
+		std::cout << championshipsWon;
+		std::cout << " (";
+		float percentage = ((float)championshipsWon / totalChampionships) * 100;
+		std::cout << std::fixed;
+		std::cout << std::setprecision(1);
+		std::cout << percentage;
+		std::cout << "%)";
 		std::cout << "\n";
 	}
 	std::cout << "\n";
 
-
+	// Show the frequencies of each score
 	std::cout << "Score frequencies";
 	std::cout << std::endl;
 	std::cout << simData->getPlayer(0)->getName();
 	std::cout << " : ";
 	std::cout << simData->getPlayer(1)->getName();
 	std::cout << "\n";
-
 	for (int i = 0; i < 7; i++)
 	{
 		printFrequency(7, i);
